@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         // Define Docker Hub username
-        DOCKER_HUB_USERNAME = 'murli9131'
+        DOCKER_HUB_USERNAME = 'maharshi369'
         SCANNER_HOME=tool 'sonar-scanner'
     }
     
@@ -22,7 +22,7 @@ pipeline {
         
         stage('Pull Git Repo'){
             steps{
-                git 'https://github.com/Murli913/Mario-Game.git'
+                git 'https://github.com/Maharshi-Project/SPE_Mario.git'
             }
         }
         stage('Making Port Avaiable') {
@@ -109,22 +109,22 @@ pipeline {
             steps {
                 script {
                     sh "docker tag mario_backend ${DOCKER_HUB_USERNAME}/mario_backend"
-                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'murli9131', passwordVariable: 'Murli@9131')]) {
-                        sh "docker login -u 'murli9131' -p 'Murli@9131' "
+                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'maharshi369', passwordVariable: 'Dasnadas@1')]) {
+                        sh "docker login -u 'maharshi369' -p 'Dasnadas@1' "
                         sh "docker push ${DOCKER_HUB_USERNAME}/mario_backend"
                     }
 
                     // Tag and push the frontend image
                   sh "docker tag mario_frontend ${DOCKER_HUB_USERNAME}/mario_frontend"
-                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'murli9131', passwordVariable: 'Murli@9131')]) {
-                        sh "docker login -u 'murli9131' -p 'Murli@9131'"
+                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'maharshi369', passwordVariable: 'Dasnadas@1')]) {
+                        sh "docker login -u 'maharshi369' -p 'Dasnadas@1'"
                         sh "docker push ${DOCKER_HUB_USERNAME}/mario_frontend"
                     }
 
                     // Tag and push the mysql image
                    sh "docker tag mysql ${DOCKER_HUB_USERNAME}/mysql"
-                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'murli9131', passwordVariable: 'Murli@9131')]) {
-                        sh "docker login -u 'murli9131' -p 'Murli@9131'"
+                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'maharshi369', passwordVariable: 'Dasnadas@1')]) {
+                        sh "docker login -u 'maharshi369' -p 'Dasnadas@1'"
                         sh "docker push ${DOCKER_HUB_USERNAME}/mysql"
                     }
                 }
@@ -153,7 +153,7 @@ pipeline {
             body: "Project: ${env.JOB_NAME}<br/>" +
                 "Build Number: ${env.BUILD_NUMBER}<br/>" +
                 "URL: ${env.BUILD_URL}<br/>",
-            to: 'murlitalreja913@gmail.com',
+            to: 'maharshipatel200@gmail.com',
             attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
         }
     }
