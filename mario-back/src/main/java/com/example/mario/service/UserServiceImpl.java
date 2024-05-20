@@ -2,7 +2,6 @@ package com.example.mario.service;
 
 import com.example.mario.modal.User;
 import com.example.mario.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,8 +9,11 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public User saveUser(User user) {
@@ -21,6 +23,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(Long id) {
         Optional<User> user =  userRepository.findById(id);
+        return user.orElse(null);
+    }
+
+    @Override
+    public User getHighScore() {
+        Optional<User> user = userRepository.findUserWithMaxScore();
+        return user.orElse(null);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        Optional<User> user =  userRepository.findByUsername(username);
         return user.orElse(null);
     }
 }
