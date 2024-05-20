@@ -261,7 +261,7 @@ kaboom({
     async function saveUser(username, score) {
     const data = { username, score };
     console.log('test function');
-    const response = await fetch('http://localhost:8081/saveUser', {
+    const response = await fetch('http://mario-backend:8081/saveUser', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
