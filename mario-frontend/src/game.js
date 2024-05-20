@@ -262,7 +262,7 @@ kaboom({
     const userData = { username, score };
     console.log('test function');
     try {
-        const response = await fetch('http://mario-backend.default.svc.cluster.local:8081/saveUser', {
+        const response = await fetch('http://192.168.58.2:31497/saveUser', {
             method: 'POST',
             body: JSON.stringify(userData),
             headers: {
