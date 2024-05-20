@@ -261,13 +261,20 @@ kaboom({
     async function saveUser(username, score) {
     const data = { username, score };
     console.log('test function');
-    const response = await fetch('http://mario-backend:8081/saveUser', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
+    const response = await fetch('http://mario-backend.default.svc.cluster.local:8081/saveUser', {
+    method: 'POST',
+    body: JSON.stringify(userData),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Success:', data);
+})
+.catch((error) => {
+    console.error('Error:', error);
+});
     return await response.json();
 }
   
