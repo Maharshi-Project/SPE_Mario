@@ -55,6 +55,6 @@ spec:
   - protocol: TCP
     port: 5044
     targetPort: 5044
-    nodePort: 32002  # Choose an available port
+    nodePort: 32003  # Choose an available port
   type: NodePort
 

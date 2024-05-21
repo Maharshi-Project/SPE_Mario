@@ -33,5 +33,5 @@ spec:
   - protocol: TCP
     port: 5601
     targetPort: 5601
-    nodePort: 32001  # You can choose an available port here
+    nodePort: 32002  # You can choose an available port here
 

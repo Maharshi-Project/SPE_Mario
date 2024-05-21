@@ -30,7 +30,7 @@ data:
       @log_level info
       include_tag_key true
       host 192.168.49.2  # Replace with your Minikube IP address
-      port 32000        # Use the NodePort specified for Elasticsearch
+      port 32001        # Use the NodePort specified for Elasticsearch
       logstash_format true
       flush_interval 5s
       <buffer>
@@ -70,7 +70,7 @@ spec:
         - name: FLUENT_ELASTICSEARCH_HOST
           value: "192.168.49.2"  # Replace with your Minikube IP address
         - name: FLUENT_ELASTICSEARCH_PORT
-          value: "32000"         # Use the NodePort specified for Elasticsearch
+          value: "32001"         # Use the NodePort specified for Elasticsearch
         volumeMounts:
         - name: varlog
           mountPath: /var/log
