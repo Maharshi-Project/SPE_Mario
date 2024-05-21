@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fluentd-config
+  namespace: default
 data:
   fluent.conf: |
     <source>
@@ -29,8 +30,8 @@ data:
       @id out_elasticsearch
       @log_level info
       include_tag_key true
-      host 192.168.49.2  # Replace with your Minikube IP address
-      port 32001        # Use the NodePort specified for Elasticsearch
+      host ${FLUENT_ELASTICSEARCH_HOST}
+      port ${FLUENT_ELASTICSEARCH_PORT}
       logstash_format true
       flush_interval 5s
       <buffer>
@@ -44,7 +45,6 @@ data:
         overflow_action block
       </buffer>
     </match>
-
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -70,43 +70,47 @@ spec:
         - name: FLUENT_ELASTICSEARCH_HOST
           value: "192.168.49.2"  # Replace with your Minikube IP address
         - name: FLUENT_ELASTICSEARCH_PORT
-          value: "32001"         # Use the NodePort specified for Elasticsearch
+          value: "32001"          # Use the NodePort you specified for Elasticsearch
         volumeMounts:
         - name: varlog
           mountPath: /var/log
         - name: config-volume
           mountPath: /fluentd/etc/fluent.conf
           subPath: fluent.conf
+        - name: logextramount
+          mountPath: /var/lib/docker/containers
+          readOnly: true
       volumes:
       - name: varlog
         hostPath:
           path: /var/log
+      - name: logextramount
+        hostPath:
+          path: /var/lib/docker/containers
       - name: config-volume
         configMap:
           name: fluentd-config
           items:
             - key: fluent.conf
               path: fluent.conf
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: fluentd-rolebinding
+  name: fluentd-service-account
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: fluentd-role
+  name: fluentd-service-account
 subjects:
 - kind: ServiceAccount
   name: fluentd-service-account
   namespace: default
-
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: fluentd-role
+  name: fluentd-service-account
 rules:
   - apiGroups: [""]
     resources:
@@ -116,7 +120,6 @@ rules:
       - get
       - watch
       - list
-
 ---
 apiVersion: v1
 kind: ServiceAccount
