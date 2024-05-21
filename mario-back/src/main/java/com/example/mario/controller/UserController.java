@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("http://localhost:3001")
+@CrossOrigin("http://localhost:3000")
 public class UserController {
 
     private final UserService userService;
@@ -49,4 +49,25 @@ public class UserController {
             return ResponseEntity.ok(user);
         }
     }
+
+    @PutMapping("/updateUserScore")
+    public ResponseEntity<User> updateUser(@RequestBody User newUserDetails) {
+        try {
+            User updatedUser = userService.updateUserByUsername(newUserDetails);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            return ResponseEntity.ok(null);
+        }
+    }
+
+    @GetMapping("/isPresent/{username}")
+    public ResponseEntity<Boolean> isPresent(@PathVariable String username) {
+        User user = userService.getUserByUsername(username);
+        if(user == null) {
+            return ResponseEntity.ok(false);
+        }
+        else
+            return ResponseEntity.ok(true);
+    }
+
 }

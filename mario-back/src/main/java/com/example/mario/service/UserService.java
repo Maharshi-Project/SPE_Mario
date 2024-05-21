@@ -7,4 +7,5 @@ public interface UserService {
     User getUser(Long id);
     User getHighScore();
     User getUserByUsername(String username);
+    User updateUserByUsername(User newUserDetails);
 }

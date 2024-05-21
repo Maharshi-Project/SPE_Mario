@@ -37,4 +37,22 @@ public class UserServiceImpl implements UserService {
         Optional<User> user =  userRepository.findByUsername(username);
         return user.orElse(null);
     }
+    @Override
+    public User updateUserByUsername(User newUserDetails) {
+        Optional<User> optionalUser = userRepository.findByUsername(newUserDetails.getUsername());
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUsername(newUserDetails.getUsername());
+            if(optionalUser.get().getScore() < newUserDetails.getScore())
+            {
+                user.setScore(newUserDetails.getScore());
+            }
+            return userRepository.save(user);
+        }
+        else
+        {
+            return optionalUser.get();
+        }
+    }
 }
