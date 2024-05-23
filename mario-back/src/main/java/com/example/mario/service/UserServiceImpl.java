@@ -4,6 +4,7 @@ import com.example.mario.modal.User;
 import com.example.mario.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,9 +29,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getHighScore() {
-        Optional<User> user = userRepository.findUserWithMaxScore();
-        return user.orElse(null);
+        return userRepository.findUserWithMaxScore().orElse(null);
     }
+
+
 
     @Override
     public User getUserByUsername(String username) {

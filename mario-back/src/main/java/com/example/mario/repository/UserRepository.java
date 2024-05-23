@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("SELECT u FROM User u WHERE u.score = (SELECT MAX(u2.score) FROM User u2)")
+    @Query(value = "SELECT * FROM user u WHERE u.score = (SELECT MAX(u2.score) FROM user u2) LIMIT 1", nativeQuery = true)
     Optional<User> findUserWithMaxScore();
     Optional<User> findByUsername(String username);
 }

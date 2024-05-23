@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 /*global kaboom, loadRoot, loadSprite, scene, layers, addLevel, add, text, pos, width, height, vec2, sprite, solid, body, action, destroy, go, camPos, keyPress, keyDown, scale, layer, dt, start, rgb, mouseIsClicked, localStorage*/
 kaboom({
   global: true,
@@ -279,9 +281,8 @@ scene("game", async ({ level, score }) => {
 
 async function saveUser(username, score) {
   const userData = { username, score };
-  console.log("test function");
+  console.log("Save new User: " + username + " with score: " + score);
   try {
-    // const response = await fetch('http://10.109.24.235:31497/saveUser', {
     const response = await fetch("http://localhost:8081/saveUser", {
       method: "POST",
       body: JSON.stringify(userData),
@@ -305,32 +306,34 @@ async function saveUser(username, score) {
 async function isPresent(username) {
   console.log("test function");
   try {
-    const response = await fetch(
-      `http://localhost:8081/isPresent/${username}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`http://localhost:8081/isPresent/${username}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    console.log(response);
-    const data = await response.json();
-    console.log("Success:", data);
-    return true;
+
+    const responseText = await response.text();
+    console.log("Response Text:", responseText);
+
+    // Interpret the response text as a boolean
+    const data = responseText === 'true';
+    console.log("Is Present - ", data);
+    return data;
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Is Present - Error:", error);
     return false;
   }
 }
 
+
 async function updateScore(username, score) {
   const userData = { username, score };
-    // const response = await fetch('http://10.109.24.235:31497/isPresent/', {
+  try {
     const response = await fetch("http://localhost:8081/updateUserScore", {
       method: "PUT",
       body: JSON.stringify(userData),
@@ -346,16 +349,27 @@ async function updateScore(username, score) {
     const data = await response.json();
     console.log("Success:", data);
     return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+async function handleUser(username, score) {
+  if (await isPresent(username)) {
+    console.log("Old User: " + username);
+    await updateScore(username, score);
+  } else {
+    console.log("New User with username: " + username);
+    await saveUser(username, score);
+  }
 }
 
 scene("lose", ({ score, username }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
   console.log(username+score);
-  if (isPresent(username)) {
-    updateScore(username, score);
-  } else {
-    saveUser(username, score);
-  }
+
+  handleUser(username, score);
+
   // Add restart button
   const restartBtn = add([
     text("Restart"),
@@ -396,6 +410,4 @@ scene("lose", ({ score, username }) => {
     layer("ui"),
   ]);
 });
-console.log("test usrname ", username);
-console.log("test score");
 start("game", { level: 0, score: 0 });
