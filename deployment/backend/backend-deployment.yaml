@@ -27,12 +27,12 @@ spec:
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
-              name: marioSecret
+              name: mariosecret
               key: username
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: marioSecret
+              name: mariosecret
               key: password
               
 ---
