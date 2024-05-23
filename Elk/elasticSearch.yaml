@@ -23,10 +23,10 @@ spec:
           name: transport
         resources:
           requests:
-            memory: "2Gi"
+            memory: "1Gi"  # Set memory request
             cpu: "1"
           limits:
-            memory: "4Gi"
+            memory: "1Gi"  # Set memory limit
             cpu: "2"
         env:
         - name: discovery.type
@@ -44,6 +44,6 @@ spec:
     - protocol: TCP
       port: 9200
       targetPort: 9200
-      nodePort: 32001 # Choose an available port
+      nodePort: 32001
   type: NodePort
 

@@ -25,15 +25,16 @@ spec:
         - name: MYSQL_DB_NAME
           value: "mario"
         - name: MYSQL_USER
-          value: "root"
+          valueFrom:
+            secretKeyRef:
+              name: marioSecret
+              key: username
         - name: MYSQL_PASSWORD
-          value: "password"
-        livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8081
-          initialDelaySeconds: 30
-          periodSeconds: 10
+          valueFrom:
+            secretKeyRef:
+              name: marioSecret
+              key: password
+              
 ---
 apiVersion: v1
 kind: Service
@@ -46,5 +47,6 @@ spec:
   - protocol: TCP
     port: 8081
     targetPort: 8081
+    nodePort: 30500
   type: NodePort
 

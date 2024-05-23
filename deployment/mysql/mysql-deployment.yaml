@@ -18,7 +18,10 @@ spec:
         name: mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: "password"
+          valueFrom:
+            secretKeyRef:
+              name: marioSecret
+              key: password
         - name: MYSQL_DATABASE
           value: "mario"
         ports:
@@ -27,11 +30,6 @@ spec:
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
-        livenessProbe:
-          exec:
-            command: ["mysqladmin", "ping", "-h", "localhost"]
-          initialDelaySeconds: 30
-          periodSeconds: 10
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
@@ -43,7 +41,8 @@ metadata:
   name: mysql
 spec:
   ports:
-  - port: 3306
+  - protocol: TCP
+    port: 3306
   selector:
     app: mysql
 

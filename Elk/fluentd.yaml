@@ -68,9 +68,9 @@ spec:
           runAsUser: 0
         env:
         - name: FLUENT_ELASTICSEARCH_HOST
-          value: "192.168.49.2"  # Replace with your Minikube IP address
+          value: "192.168.49.2"  # Minikube IP address
         - name: FLUENT_ELASTICSEARCH_PORT
-          value: "32001"          # Use the NodePort you specified for Elasticsearch
+          value: "32001"          # NodePort for Elasticsearch
         volumeMounts:
         - name: varlog
           mountPath: /var/log
@@ -93,6 +93,7 @@ spec:
           items:
             - key: fluent.conf
               path: fluent.conf
+              
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -106,6 +107,7 @@ subjects:
 - kind: ServiceAccount
   name: fluentd-service-account
   namespace: default
+  
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
