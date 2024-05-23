@@ -132,7 +132,7 @@ scene("game", async ({ level, score }) => {
     },
   ]);
   try {
-    const response = await fetch('http://10.109.24.235:31497/getHighScore', {
+    const response = await fetch('http://192.168.49.2:30500/getHighScore', {
     // const response = await fetch("http://localhost:8081/getHighScore", {
       method: "GET",
       headers: {
@@ -283,7 +283,7 @@ async function saveUser(username, score) {
   const userData = { username, score };
   console.log("Save new User: " + username + " with score: " + score);
   try {
-    const response = await fetch("http://10.109.24.235:31497/saveUser",{
+    const response = await fetch("http://192.168.49.2:30500/saveUser",{
     // const response = await fetch("http://localhost:8081/saveUser", {
       method: "POST",
       body: JSON.stringify(userData),
@@ -307,7 +307,7 @@ async function saveUser(username, score) {
 async function isPresent(username) {
   console.log("test function");
   try {
-    const response = await fetch(`http://10.109.24.235:31497/isPresent/${username}`, {
+    const response = await fetch(`http://192.168.49.2:30500/isPresent/${username}`, {
     // const response = await fetch(`http://localhost:8081/isPresent/${username}`, {
       method: "GET",
       headers: {
@@ -336,7 +336,7 @@ async function isPresent(username) {
 async function updateScore(username, score) {
   const userData = { username, score };
   try {
-    const response = await fetch("http://10.109.24.235:31497/updateUserScore", {
+    const response = await fetch("http://192.168.49.2:30500/updateUserScore", {
     // const response = await fetch("http://localhost:8081/updateUserScore", {
       method: "PUT",
       body: JSON.stringify(userData),
