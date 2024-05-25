@@ -56,7 +56,7 @@ spec:
     spec:
       containers:
       - name: filebeat
-        image: docker.elastic.co/beats/filebeat:8.13.4  #docker.elastic.co/beats/filebeat:7.12.0
+        image: docker.elastic.co/beats/filebeat:7.12.0
         env:
         - name: ELASTICSEARCH_HOST
           value: "192.168.49.2"
