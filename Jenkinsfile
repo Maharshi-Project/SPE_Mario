@@ -60,22 +60,19 @@ pipeline {
             steps {
                 script {
                     sh "docker tag mario_backend ${DOCKER_HUB_USERNAME}/mario_backend"
-                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'maharshi369', passwordVariable: 'Dasnadas@1')]) {
-                        sh "docker login -u 'maharshi369' -p 'Dasnadas@1' "
+                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'userName', passwordVariable: 'Password')]) {
                         sh "docker push ${DOCKER_HUB_USERNAME}/mario_backend"
                     }
 
                     // Tag and push the frontend image
                   sh "docker tag mario_frontend ${DOCKER_HUB_USERNAME}/mario_frontend"
-                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'maharshi369', passwordVariable: 'Dasnadas@1')]) {
-                        sh "docker login -u 'maharshi369' -p 'Dasnadas@1'"
+                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'userName', passwordVariable: 'Password')]) {
                         sh "docker push ${DOCKER_HUB_USERNAME}/mario_frontend"
                     }
 
                     // Tag and push the mysql image
                   sh "docker tag mysql ${DOCKER_HUB_USERNAME}/mysql"
-                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'maharshi369', passwordVariable: 'Dasnadas@1')]) {
-                        sh "docker login -u 'maharshi369' -p 'Dasnadas@1'"
+                    withCredentials([usernamePassword(credentialsId: 'docker-jenkins', usernameVariable: 'userName', passwordVariable: 'Password')]) {
                         sh "docker push ${DOCKER_HUB_USERNAME}/mysql"
                     }
                 }
